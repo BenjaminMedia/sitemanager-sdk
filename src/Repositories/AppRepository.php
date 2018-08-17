@@ -11,6 +11,6 @@ class AppRepository extends BaseRepository
 
     public function getById(int $appId)
     {
-        return $this->get('/api/v1/apps/%s', $appId);
+        return $this->get(sprintf('/api/v1/apps/%s', $appId));
     }
 }
