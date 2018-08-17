@@ -3,7 +3,6 @@
 namespace Bonnier\SiteManager\Tests\Unit\Models;
 
 use Bonnier\SiteManager\Models\Site;
-use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
@@ -42,6 +41,27 @@ class SiteTest extends TestCase
         $this->assertEquals($data->id, $site->getId());
         $this->assertEquals($data->name, $site->getName());
         $this->assertEquals($data->description, $site->getDescription());
+        $this->assertEquals($data->domain, $site->getDomain());
+        $this->assertEquals($data->login_domain, $site->getLoginDomain());
+        $this->assertEquals($data->api_domain, $site->getApiDomain());
+        $this->assertEquals($data->language, $site->getLanguage());
+        $this->assertEquals($data->locale, $site->getLocale());
+        $this->assertEquals($data->shell_url, $site->getShellUrl());
+        $this->assertEquals($data->created_at, $site->getCreated()->format('Y-m-d H:i:s'));
+        $this->assertEquals($data->updated_at, $site->getUpdated()->format('Y-m-d H:i:s'));
+        $this->assertTrue($site->isSecure());
+        $this->assertEquals($data->cxense_site_id, $site->getCxenseSiteId());
+        $this->assertEquals($data->facebook_id, $site->getFacebookId());
+        $this->assertEquals($data->facebook_secret, $site->getFacebookSecret());
+        $this->assertEquals($data->signup_lead_permission, $site->getSignupLeadPermission());
+        $this->assertEquals($data->app->id, $site->getApp());
+        $this->assertEquals($data->brand->id, $site->getBrand());
+        $this->assertEquals($data->configuration, $site->getConfigurations());
+        $this->assertEquals($data->configuration->facebook, $site->getConfiguration('facebook'));
+        $this->assertEquals($data->configuration->facebook->app_id, $site->getConfiguration('facebook.app_id'));
+        $this->assertEquals($data->configuration->facebook->app_secret, $site->getConfiguration('facebook.app_secret'));
+        $this->assertEquals($data->configuration->cxense, $site->getConfiguration('cxense'));
+        $this->assertEquals($data->configuration->cxense->site_id, $site->getConfiguration('cxense.site_id'));
     }
 
     private function generateData()

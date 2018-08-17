@@ -428,6 +428,11 @@ class Site
         return $this->configuration;
     }
 
+    public function getConfiguration(string $path)
+    {
+        return data_get($this->configuration, $path);
+    }
+
     /**
      * @param \stdClass|null $configuration
      * @return Site

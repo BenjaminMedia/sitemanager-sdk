@@ -2,55 +2,58 @@
 
 namespace Bonnier\SiteManager\Tests\Unit\Models;
 
-use Bonnier\SiteManager\Models\App;
-use Illuminate\Support\Collection;
+use Bonnier\SiteManager\Models\Tag;
 use PHPUnit\Framework\TestCase;
 
 class TagTest extends TestCase
 {
+    /**
+    $tagId;
+    $names;
+    $created;
+    $updated;
+    $contentHubIds;
+    $internal;
+    $brand;
+    $vocabulary;
+    $metaTitles;
+    $metaDescriptions;
+     */
     public function testCanHandleNullData()
     {
-        $app = new App(null);
-        $this->assertNull($app->getId());
-        $this->assertNull($app->getContenthubId());
-        $this->assertNull($app->getCode());
-        $this->assertNull($app->getName('da'));
-        $this->assertNull($app->getCreated());
-        $this->assertNull($app->getUpdated());
-        $this->assertInstanceOf(Collection::class, $app->getNames());
-        $this->assertCount(0, $app->getNames());
+        $tag = new Tag(null);
+
+        $this->assertNull($tag->getId());
     }
 
     public function testCanFormatDataProperly()
     {
+        $data = $this->generateData();
+
+        $tag = new Tag($data);
+
+        $this->assertEquals($data->id, $tag->getId());
+    }
+
+    private function generateData()
+    {
         $data = new \stdClass();
-
         $data->id = 1;
-        $data->name = new \stdClass();
-        $data->name->da = 'Test App DA';
-        $data->name->sv = 'Test App SV';
-        $data->name->fi = 'Test App FI';
-        $data->name->no = 'Test App NO';
-        $data->app_code = 'Test App Code';
+        $data->name = $this->generateLocalization('Tag Name');
         $data->created_at = '2018-08-01 08:00:00';
-        $data->updated_at = '2018-08-17 08:55:00';
-        $data->content_hub_id = 'TEST_CONTENTHUB_ID';
+        $data->updated_at = '2018-08-17 15:02:00';
 
-        $app = new App($data);
+        return $data;
+    }
 
-        $this->assertEquals($data->id, $app->getId());
-        $this->assertEquals($data->app_code, $app->getCode());
-        $this->assertEquals($data->content_hub_id, $app->getContenthubId());
+    private function generateLocalization(string $prefix)
+    {
+        $localization = new \stdClass();
+        $localization->da = $prefix . ' DA';
+        $localization->sv = $prefix . ' SV';
+        $localization->fi = $prefix . ' FI';
+        $localization->no = $prefix . ' NO';
 
-        $this->assertInstanceOf(\DateTime::class, $app->getCreated());
-        $this->assertInstanceOf(\DateTime::class, $app->getUpdated());
-        $this->assertInstanceOf(Collection::class, $app->getNames());
-        $this->assertEquals($data->created_at, $app->getCreated()->format('Y-m-d H:i:s'));
-        $this->assertEquals($data->updated_at, $app->getUpdated()->format('Y-m-d H:i:s'));
-        $this->assertCount(4, $app->getNames());
-        $this->assertEquals($data->name->da, $app->getName('da'));
-        $this->assertEquals($data->name->sv, $app->getName('sv'));
-        $this->assertEquals($data->name->fi, $app->getName('fi'));
-        $this->assertEquals($data->name->no, $app->getName('no'));
+        return $localization;
     }
 }
