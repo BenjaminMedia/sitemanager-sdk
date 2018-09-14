@@ -4,9 +4,16 @@ namespace Bonnier\SiteManager\Repositories;
 
 class CategoryRepository extends BaseRepository
 {
-    public function getAll()
+    public function getAll(int $page = 1)
     {
-        return $this->get('/api/v1/categories');
+        return $this->get(
+            '/api/v1/categories',
+            [
+                'query' => [
+                    'page' => $page
+                ]
+            ]
+        );
     }
 
     public function findById(int $categoryId)
@@ -14,7 +21,7 @@ class CategoryRepository extends BaseRepository
         return $this->get(sprintf('/api/v1/categories/%s', $categoryId));
     }
 
-    public function findByContentHubId(int $contenthubId)
+    public function findByContentHubId(string $contenthubId)
     {
         return $this->get(sprintf('/api/v1/categories/content-hub-id/%s', $contenthubId));
     }

@@ -46,7 +46,6 @@ class SiteManager
      */
     public function __construct(?string $host = null)
     {
-        $baseUri = '';
         if ($host) {
             $baseUri = $host;
         } elseif ($envHost = env('SITE_MANAGER_HOST')) {

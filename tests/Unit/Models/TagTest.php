@@ -3,57 +3,63 @@
 namespace Bonnier\SiteManager\Tests\Unit\Models;
 
 use Bonnier\SiteManager\Models\Tag;
+use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 class TagTest extends TestCase
 {
-    /**
-    $tagId;
-    $names;
-    $created;
-    $updated;
-    $contentHubIds;
-    $internal;
-    $brand;
-    $vocabulary;
-    $metaTitles;
-    $metaDescriptions;
-     */
     public function testCanHandleNullData()
     {
         $tag = new Tag(null);
 
         $this->assertNull($tag->getId());
+        $this->assertNull($tag->getCreated());
+        $this->assertNull($tag->getUpdated());
+        $this->assertNull($tag->getBrand());
+        $this->assertNull($tag->getVocabulary());
+
+        $this->assertEmpty($tag->getNames());
+        $this->assertEmpty($tag->getContentHubIds());
+        $this->assertEmpty($tag->getMetaTitles());
+        $this->assertEmpty($tag->getMetaDescriptions());
+
+        $this->assertInstanceOf(Collection::class, $tag->getNames());
+        $this->assertInstanceOf(Collection::class, $tag->getContentHubIds());
+        $this->assertInstanceOf(Collection::class, $tag->getMetaTitles());
+        $this->assertInstanceOf(Collection::class, $tag->getMetaDescriptions());
+
+        $this->assertNull($tag->getName('da'));
+        $this->assertNull($tag->getContentHubId('da'));
+        $this->assertNull($tag->getMetaTitle('da'));
+        $this->assertNull($tag->getMetaDescription('da'));
     }
 
     public function testCanFormatDataProperly()
     {
-        $data = $this->generateData();
+        $data = Generators::generateTag();
 
         $tag = new Tag($data);
 
         $this->assertEquals($data->id, $tag->getId());
-    }
+        $this->assertEquals($data->created_at, $tag->getCreated()->format(Generators::DATE_FORMAT));
+        $this->assertEquals($data->updated_at, $tag->getUpdated()->format(Generators::DATE_FORMAT));
+        $this->assertEquals($data->brand->id, $tag->getBrand());
+        $this->assertEquals($data->vocabulary->id, $tag->getVocabulary());
 
-    private function generateData()
-    {
-        $data = new \stdClass();
-        $data->id = 1;
-        $data->name = $this->generateLocalization('Tag Name');
-        $data->created_at = '2018-08-01 08:00:00';
-        $data->updated_at = '2018-08-17 15:02:00';
+        $this->assertInstanceOf(Collection::class, $tag->getNames());
+        $this->assertInstanceOf(Collection::class, $tag->getContentHubIds());
+        $this->assertInstanceOf(Collection::class, $tag->getMetaTitles());
+        $this->assertInstanceOf(Collection::class, $tag->getMetaDescriptions());
 
-        return $data;
-    }
+        $this->assertCount(4, $tag->getNames());
+        $this->assertCount(4, $tag->getContentHubIds());
+        $this->assertCount(4, $tag->getMetaTitles());
+        $this->assertCount(4, $tag->getMetaDescriptions());
 
-    private function generateLocalization(string $prefix)
-    {
-        $localization = new \stdClass();
-        $localization->da = $prefix . ' DA';
-        $localization->sv = $prefix . ' SV';
-        $localization->fi = $prefix . ' FI';
-        $localization->no = $prefix . ' NO';
-
-        return $localization;
+        $this->assertEquals($data->name->da, $tag->getName('da'));
+        $this->assertEquals($data->content_hub_ids->da, $tag->getContentHubId('da'));
+        $this->assertEquals($data->meta_title->da, $tag->getMetaTitle('da'));
+        $this->assertEquals($data->meta_description->da, $tag->getMetaDescription('da'));
     }
 }

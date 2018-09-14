@@ -11,6 +11,6 @@ class SiteRepository extends BaseRepository
 
     public function findById(int $siteId)
     {
-        $this->get(sprintf('/api/v1/sites/%s', $siteId));
+        return $this->get(sprintf('/api/v1/sites/%s', $siteId));
     }
 }

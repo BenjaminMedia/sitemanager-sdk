@@ -3,6 +3,7 @@
 namespace Bonnier\SiteManager\Services;
 
 use Bonnier\SiteManager\Repositories\CategoryRepository;
+use Illuminate\Support\Collection;
 
 class CategoryService
 {
@@ -18,4 +19,23 @@ class CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
+    public function getAll(int $page = 1)
+    {
+        if ($response = $this->categoryRepository->getAll($page)) {
+
+        }
+    }
+
+    private function unravelPagination($items, $page = 1)
+    {
+        if (!$items) {
+            $items = new Collection();
+        }
+
+        if ($response = $this->categoryRepository->getAll($page)) {
+            
+        }
+
+        return $items;
+    }
 }

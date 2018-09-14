@@ -21,10 +21,10 @@ class VocabularyRepository extends BaseRepository
         return $this->get(sprintf('/api/v1/vocabularies/%s', $vocabularyId));
     }
 
-    public function findByAppId($appId, $page = 1)
+    public function findByBrandId(int $brandId, $page = 1)
     {
         return $this->get(
-            sprintf('/api/v1/vocabularies/app/%s', $appId),
+            sprintf('/api/v1/vocabularies/brand/%s', $brandId),
             [
                 'query' => [
                     'page' => $page

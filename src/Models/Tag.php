@@ -85,6 +85,11 @@ class Tag
         return $this->names;
     }
 
+    public function getName(string $locale): ?string
+    {
+        return $this->names->get($locale);
+    }
+
     /**
      * @param Collection $names
      * @return Tag

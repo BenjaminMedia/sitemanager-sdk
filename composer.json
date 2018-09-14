@@ -9,7 +9,8 @@
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.3"
+        "phpunit/phpunit": "^7.3",
+        "fzaninotto/faker": "^1.8"
     },
     "authors": [
         {
