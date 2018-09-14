@@ -31,5 +31,8 @@
     "scripts": {
         "test": "vendor/bin/phpunit --testdox",
         "unit": "vendor/bin/phpunit --testsuite=Unit Tests --testdox"
+    },
+    "archive": {
+        "exclude": ["/.circleci", "/tests", "/phpunit.xml"]
     }
 }
