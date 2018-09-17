@@ -5,6 +5,10 @@
 
 ## Setup
 Make sure to have the sitemanager host in your `.env`-file, or pass the SiteManager host to the SiteManager constructor:
+```
+SITE_MANAGER_HOST=https://site-manager.test
+```
+or
 ```php
 $siteManager = new SiteManager('https://site-manager.test');
 ```
