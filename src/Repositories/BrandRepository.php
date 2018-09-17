@@ -6,7 +6,7 @@ class BrandRepository extends BaseRepository
 {
     public function getAll()
     {
-        return $this->get('api/v1/brands');
+        return $this->get('/api/v1/brands');
     }
 
     public function findById(int $brandId)

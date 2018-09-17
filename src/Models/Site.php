@@ -2,8 +2,6 @@
 
 namespace Bonnier\SiteManager\Models;
 
-use Illuminate\Support\Collection;
-
 class Site
 {
     /** @var int|null */

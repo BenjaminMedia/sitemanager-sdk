@@ -5,7 +5,7 @@ namespace Bonnier\SiteManager\Tests\Unit\Repositories;
 use Bonnier\SiteManager\Repositories\BrandRepository;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use Bonnier\SiteManager\Tests\Unit\RepositoryTestCase;
-use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 class BrandRepositoryTest extends RepositoryTestCase
@@ -23,27 +23,35 @@ class BrandRepositoryTest extends RepositoryTestCase
             Generators::generateBrand(),
         ];
 
-        $mockHandler = new MockHandler([
+        /** @var BrandRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response))
         ]);
 
-        /** @var BrandRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->getAll());
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/brands', $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
     }
 
     public function testCanGetById()
     {
         $response = Generators::generateBrand();
 
-        $mockHandler = new MockHandler([
+        /** @var BrandRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response))
         ]);
 
-        /** @var BrandRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->findById($response->id));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/brands/' . $response->id, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
     }
 }

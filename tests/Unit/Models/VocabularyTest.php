@@ -3,6 +3,8 @@
 namespace Bonnier\SiteManager\Tests\Unit\Models;
 
 use Bonnier\SiteManager\Models\Vocabulary;
+use Bonnier\SiteManager\Tests\Unit\Helpers\Asserts;
+use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use PHPUnit\Framework\TestCase;
 
 class VocabularyTest extends TestCase
@@ -20,6 +22,10 @@ class VocabularyTest extends TestCase
 
     public function testCanFormatDataProperly()
     {
-        $this->assertTrue(1 === 1);
+        $data = Generators::generateVocabulary();
+
+        $vocabulary = new Vocabulary($data);
+
+        Asserts::assertVocabulary($vocabulary, $data);
     }
 }

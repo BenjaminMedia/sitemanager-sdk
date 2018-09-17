@@ -8,7 +8,7 @@ use Bonnier\SiteManager\Services\AppService;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Asserts;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use Bonnier\SiteManager\Tests\Unit\ServiceTestCase;
-use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 
@@ -26,14 +26,20 @@ class AppServiceTest extends ServiceTestCase
             Generators::generateApp(),
             Generators::generateApp(),
         ];
-        $mockHandler = new MockHandler([
+
+        /** @var AppService $service */
+        $service = $this->getService([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var AppService $service */
-        $service = $this->getService($mockHandler);
-
         $apps = $service->getAll();
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/apps', $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
 
         $this->assertInstanceOf(Collection::class, $apps);
         $this->assertCount(count($response), $apps);
@@ -46,14 +52,19 @@ class AppServiceTest extends ServiceTestCase
     {
         $response = Generators::generateApp();
 
-        $mockHandler = new MockHandler([
+        /** @var AppService $service */
+        $service = $this->getService([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var AppService $service */
-        $service = $this->getService($mockHandler);
-
         $app = $service->getById($response->id);
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/apps/' . $response->id, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
 
         $this->assertInstanceOf(App::class, $app);
         Asserts::assertApp($app, $response);

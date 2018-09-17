@@ -5,12 +5,14 @@ namespace Bonnier\SiteManager\Tests\Unit;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use PHPUnit\Framework\TestCase;
 
 class ServiceTestCase extends TestCase
 {
     protected $repoClass;
     protected $serviceClass;
+    protected $historyContainer = [];
 
     public function testCanBeInstantiated()
     {
@@ -21,9 +23,15 @@ class ServiceTestCase extends TestCase
         $this->assertInstanceOf($this->serviceClass, $service);
     }
 
-    protected function getService(MockHandler $mockHandler)
+    protected function getService(array $responses)
     {
+        $mockHandler = new MockHandler($responses);
         $handler = HandlerStack::create($mockHandler);
+
+        $history = Middleware::history($this->historyContainer);
+
+        $handler->push($history);
+
         $client = new Client(['handler' => $handler]);
 
         $repo = new $this->repoClass($client);

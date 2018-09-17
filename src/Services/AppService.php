@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class AppService
 {
     /** @var AppRepository */
-    protected $appRepository;
+    protected $repository;
 
     /**
      * AppService constructor.
@@ -17,12 +17,12 @@ class AppService
      */
     public function __construct(AppRepository $appRepository)
     {
-        $this->appRepository = $appRepository;
+        $this->repository = $appRepository;
     }
 
     public function getAll(): ?Collection
     {
-        if ($apps = $this->appRepository->getAll()) {
+        if ($apps = $this->repository->getAll()) {
             return collect($apps)->map(function ($app) {
                 return new App($app);
             });
@@ -33,7 +33,7 @@ class AppService
 
     public function getById(int $appId): ?App
     {
-        if ($app = $this->appRepository->getById($appId)) {
+        if ($app = $this->repository->getById($appId)) {
             return new App($app);
         }
 

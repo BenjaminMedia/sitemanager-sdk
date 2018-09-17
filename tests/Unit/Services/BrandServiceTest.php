@@ -8,7 +8,7 @@ use Bonnier\SiteManager\Services\BrandService;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Asserts;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use Bonnier\SiteManager\Tests\Unit\ServiceTestCase;
-use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 
@@ -27,14 +27,19 @@ class BrandServiceTest extends ServiceTestCase
             Generators::generateBrand(),
         ];
 
-        $mockHandler = new MockHandler([
+        /** @var BrandService $service */
+        $service = $this->getService([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var BrandService $service */
-        $service = $this->getService($mockHandler);
-
         $brands = $service->getAll();
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/brands', $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
 
         $this->assertInstanceOf(Collection::class, $brands);
         $this->assertCount(count($response), $brands);
@@ -48,14 +53,19 @@ class BrandServiceTest extends ServiceTestCase
     {
         $response = Generators::generateBrand();
 
-        $mockHandler = new MockHandler([
+        /** @var BrandService $service */
+        $service = $this->getService([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var BrandService $service */
-        $service = $this->getService($mockHandler);
-
         $brand = $service->getById($response->id);
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/brands/' . $response->id, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
 
         $this->assertInstanceOf(Brand::class, $brand);
 

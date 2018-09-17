@@ -5,7 +5,7 @@ namespace Bonnier\SiteManager\Tests\Unit\Repositories;
 use Bonnier\SiteManager\Repositories\CategoryRepository;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use Bonnier\SiteManager\Tests\Unit\RepositoryTestCase;
-use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 class CategoryRepositoryTest extends RepositoryTestCase
@@ -25,42 +25,57 @@ class CategoryRepositoryTest extends RepositoryTestCase
             Generators::generateCategory(),
         ];
 
-        $mockHandler = new MockHandler([
+        /** @var CategoryRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var CategoryRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->getAll());
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/categories', $request->getUri()->getPath());
+        $this->assertEquals('page=1', $request->getUri()->getQuery());
     }
 
     public function testCanGetById()
     {
         $response = Generators::generateCategory();
 
-        $mockHandler = new MockHandler([
+        /** @var CategoryRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var CategoryRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->findById($response->id));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/categories/' . $response->id, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
     }
 
     public function testCanGetByContenthubId()
     {
         $response = Generators::generateCategory();
 
-        $mockHandler = new MockHandler([
+        /** @var CategoryRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var CategoryRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->findByContentHubId($response->content_hub_ids->da));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            '/api/v1/categories/content-hub-id/' . $response->content_hub_ids->da,
+            $request->getUri()->getPath()
+        );
+        $this->assertEmpty($request->getUri()->getQuery());
     }
 
     public function testCanGetByBrandId()
@@ -98,13 +113,17 @@ class CategoryRepositoryTest extends RepositoryTestCase
             ]),
         ];
 
-        $mockHandler = new MockHandler([
+        /** @var CategoryRepository $repo */
+        $repo = $this->getRepository([
             new Response(200, [], json_encode($response)),
         ]);
 
-        /** @var CategoryRepository $repo */
-        $repo = $this->getRepository($mockHandler);
-
         $this->assertEquals($response, $repo->findByBrandId($response[0]->brand->id));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/categories/brand/' . $response[0]->brand->id, $request->getUri()->getPath());
+        $this->assertEquals('page=1', $request->getUri()->getQuery());
     }
 }

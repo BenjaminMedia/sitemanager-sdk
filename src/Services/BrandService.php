@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class BrandService
 {
     /** @var BrandRepository */
-    protected $brandRepository;
+    protected $repository;
 
     /**
      * BrandService constructor.
@@ -17,12 +17,12 @@ class BrandService
      */
     public function __construct(BrandRepository $brandRepository)
     {
-        $this->brandRepository = $brandRepository;
+        $this->repository = $brandRepository;
     }
 
     public function getAll(): ?Collection
     {
-        if ($brands = $this->brandRepository->getAll()) {
+        if ($brands = $this->repository->getAll()) {
             return collect($brands)->map(function ($brand) {
                 return new Brand($brand);
             });
@@ -33,7 +33,7 @@ class BrandService
 
     public function getById(int $brandId): ?Brand
     {
-        if ($brand = $this->brandRepository->findById($brandId)) {
+        if ($brand = $this->repository->findById($brandId)) {
             return new Brand($brand);
         }
 

@@ -190,6 +190,33 @@ class Generators
         return $tag;
     }
 
+    public static function generateVocabulary(array $config = [])
+    {
+        $vocabulary = new \stdClass();
+        $vocabulary->id = $config['id'] ?? self::faker()->randomNumber(2);
+        $vocabulary->name = $config['name'] ?? self::faker()->words(2, true);
+        $vocabulary->machine_name = $config['machine_name'] ?? self::faker()->word;
+        $vocabulary->content_hub_id = $config['contenthub_id'] ?? self::faker()->uuid;
+        $vocabulary->multi_select = boolval($config['multi_select'] ?? self::faker()->boolean);
+        $vocabulary->brand = self::generateSimpleBrand($config);
+
+        return $vocabulary;
+    }
+
+    public static function generateMetaPagination(int $currentPage, int $totalPages)
+    {
+        return [
+            'pagination' => [
+                'total' => 9,
+                'count' => 3,
+                'per_page' => 3,
+                'current_page' => $currentPage,
+                'total_pages' => $totalPages,
+                'links' => []
+            ],
+        ];
+    }
+
     private static function faker()
     {
         if (!self::$faker) {

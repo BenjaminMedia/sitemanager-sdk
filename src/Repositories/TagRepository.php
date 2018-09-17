@@ -33,7 +33,7 @@ class TagRepository extends BaseRepository
         );
     }
 
-    public function findByContentHubId(int $contenthubId)
+    public function findByContentHubId(string $contenthubId)
     {
         return $this->get(sprintf('/api/v1/tags/content-hub-id/%s', $contenthubId));
     }

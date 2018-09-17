@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class SiteService
 {
     /** @var SiteRepository */
-    protected $siteRepository;
+    protected $repository;
 
     /**
      * SiteService constructor.
@@ -17,12 +17,12 @@ class SiteService
      */
     public function __construct(SiteRepository $siteRepository)
     {
-        $this->siteRepository = $siteRepository;
+        $this->repository = $siteRepository;
     }
 
     public function getAll(): ?Collection
     {
-        if ($sites = $this->siteRepository->getAll()) {
+        if ($sites = $this->repository->getAll()) {
             return collect($sites)->map(function ($site) {
                 return new Site($site);
             });
@@ -33,7 +33,7 @@ class SiteService
 
     public function getById(int $siteId): ?Site
     {
-        if ($site = $this->siteRepository->findById($siteId)) {
+        if ($site = $this->repository->findById($siteId)) {
             return new Site($site);
         }
 

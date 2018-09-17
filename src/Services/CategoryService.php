@@ -2,13 +2,17 @@
 
 namespace Bonnier\SiteManager\Services;
 
+use Bonnier\SiteManager\Models\Category;
 use Bonnier\SiteManager\Repositories\CategoryRepository;
+use Bonnier\SiteManager\Traits\PaginationTrait;
 use Illuminate\Support\Collection;
 
 class CategoryService
 {
+    use PaginationTrait;
+
     /** @var CategoryRepository */
-    protected $categoryRepository;
+    protected $repository;
 
     /**
      * CategoryService constructor.
@@ -16,26 +20,46 @@ class CategoryService
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->repository = $categoryRepository;
     }
 
-    public function getAll(int $page = 1)
+    public function getAll(): ?Collection
     {
-        if ($response = $this->categoryRepository->getAll($page)) {
-
+        if ($categories = $this->unravelPagination()) {
+            return $categories->map(function ($category) {
+                return new Category($category);
+            });
         }
+
+        return null;
     }
 
-    private function unravelPagination($items, $page = 1)
+    public function getById(int $categoryId): ?Category
     {
-        if (!$items) {
-            $items = new Collection();
+        if ($category = $this->repository->findById($categoryId)) {
+            return new Category($category);
         }
 
-        if ($response = $this->categoryRepository->getAll($page)) {
-            
+        return null;
+    }
+
+    public function getByContenthubId(string $contenthubId): ?Category
+    {
+        if ($category = $this->repository->findByContentHubId($contenthubId)) {
+            return new Category($category);
         }
 
-        return $items;
+        return null;
+    }
+
+    public function getByBrandId(int $brandId): ?Collection
+    {
+        if ($categories = $this->unravelEndpointPagination('findByBrandId', $brandId)) {
+            return $categories->map(function ($category) {
+                return new Category($category);
+            });
+        }
+
+        return null;
     }
 }

@@ -3,6 +3,7 @@
 namespace Bonnier\SiteManager\Tests\Unit\Models;
 
 use Bonnier\SiteManager\Models\Tag;
+use Bonnier\SiteManager\Tests\Unit\Helpers\Asserts;
 use Bonnier\SiteManager\Tests\Unit\Helpers\Generators;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
@@ -41,25 +42,6 @@ class TagTest extends TestCase
 
         $tag = new Tag($data);
 
-        $this->assertEquals($data->id, $tag->getId());
-        $this->assertEquals($data->created_at, $tag->getCreated()->format(Generators::DATE_FORMAT));
-        $this->assertEquals($data->updated_at, $tag->getUpdated()->format(Generators::DATE_FORMAT));
-        $this->assertEquals($data->brand->id, $tag->getBrand());
-        $this->assertEquals($data->vocabulary->id, $tag->getVocabulary());
-
-        $this->assertInstanceOf(Collection::class, $tag->getNames());
-        $this->assertInstanceOf(Collection::class, $tag->getContentHubIds());
-        $this->assertInstanceOf(Collection::class, $tag->getMetaTitles());
-        $this->assertInstanceOf(Collection::class, $tag->getMetaDescriptions());
-
-        $this->assertCount(4, $tag->getNames());
-        $this->assertCount(4, $tag->getContentHubIds());
-        $this->assertCount(4, $tag->getMetaTitles());
-        $this->assertCount(4, $tag->getMetaDescriptions());
-
-        $this->assertEquals($data->name->da, $tag->getName('da'));
-        $this->assertEquals($data->content_hub_ids->da, $tag->getContentHubId('da'));
-        $this->assertEquals($data->meta_title->da, $tag->getMetaTitle('da'));
-        $this->assertEquals($data->meta_description->da, $tag->getMetaDescription('da'));
+        Asserts::assertTag($tag, $data);
     }
 }
