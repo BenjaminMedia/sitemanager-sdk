@@ -82,6 +82,14 @@ class VocabularyServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var VocabularyService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateVocabulary();
@@ -101,6 +109,14 @@ class VocabularyServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertVocabulary($vocabulary, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var VocabularyService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 
     public function testCanGetByBrandId()
@@ -174,5 +190,13 @@ class VocabularyServiceTest extends ServiceTestCase
         $vocabularies->each(function (Vocabulary $vocabulary, int $index) use ($expectedVocabularies) {
             Asserts::assertVocabulary($vocabulary, $expectedVocabularies[$index]);
         });
+    }
+
+    public function testCanGetByBrandIdWithEmptyResponse()
+    {
+        /** @var VocabularyService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByBrandId(1));
     }
 }

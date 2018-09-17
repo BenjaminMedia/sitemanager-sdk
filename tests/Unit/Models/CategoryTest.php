@@ -61,4 +61,63 @@ class CategoryTest extends TestCase
 
         Asserts::assertCategory($category, $data);
     }
+
+    public function testCanSetCollectionsDirectly()
+    {
+        $category = new Category(null);
+        $category->setNames(collect([
+            'da' => 'name da',
+            'sv' => 'name sv',
+        ]));
+        $category->setDescriptions(collect([
+            'da' => 'description da',
+            'sv' => 'description sv',
+        ]));
+        $category->setContenthubIds(collect([
+            'da' => 'contenthub id da',
+            'sv' => 'contenthub id sv',
+        ]));
+        $category->setImages(collect([
+            'da' => 'image da',
+            'sv' => 'image sv',
+        ]));
+        $category->setBodies(collect([
+            'da' => 'body da',
+            'sv' => 'body sv',
+        ]));
+        $category->setMetaTitles(collect([
+            'da' => 'meta title da',
+            'sv' => 'meta title sv',
+        ]));
+        $category->setMetaDescriptions(collect([
+            'da' => 'meta description da',
+            'sv' => 'meta description sv',
+        ]));
+
+        $this->assertEquals('name da', $category->getName('da'));
+        $this->assertEquals('name sv', $category->getName('sv'));
+
+        $this->assertEquals('description da', $category->getDescription('da'));
+        $this->assertEquals('description sv', $category->getDescription('sv'));
+
+
+        $this->assertEquals('contenthub id da', $category->getContenthubId('da'));
+        $this->assertEquals('contenthub id sv', $category->getContenthubId('sv'));
+
+
+        $this->assertEquals('image da', $category->getImage('da'));
+        $this->assertEquals('image sv', $category->getImage('sv'));
+
+
+        $this->assertEquals('body da', $category->getBody('da'));
+        $this->assertEquals('body sv', $category->getBody('sv'));
+
+
+        $this->assertEquals('meta title da', $category->getMetaTitle('da'));
+        $this->assertEquals('meta title sv', $category->getMetaTitle('sv'));
+
+
+        $this->assertEquals('meta description da', $category->getMetaDescription('da'));
+        $this->assertEquals('meta description sv', $category->getMetaDescription('sv'));
+    }
 }

@@ -48,6 +48,14 @@ class SiteServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var SiteService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateSite();
@@ -67,5 +75,13 @@ class SiteServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertSite($site, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var SiteService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 }

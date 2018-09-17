@@ -31,4 +31,16 @@ class AppTest extends TestCase
 
         Asserts::assertApp($app, $data);
     }
+
+    public function testCanSetCollectionDirectly()
+    {
+        $app = new App(null);
+        $app->setNames(collect([
+            'da' => 'test DA',
+            'sv' => 'test SV'
+        ]));
+
+        $this->assertEquals('test DA', $app->getName('da'));
+        $this->assertEquals('test SV', $app->getName('sv'));
+    }
 }

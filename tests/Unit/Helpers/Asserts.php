@@ -138,6 +138,8 @@ class Asserts extends TestCase
         self::assertEquals($data->brand->id, $tag->getBrand());
         self::assertEquals($data->vocabulary->id, $tag->getVocabulary());
 
+        self::assertInternalType('bool', $tag->isInternal());
+
         self::assertInstanceOf(Collection::class, $tag->getNames());
         self::assertInstanceOf(Collection::class, $tag->getContentHubIds());
         self::assertInstanceOf(Collection::class, $tag->getMetaTitles());

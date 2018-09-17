@@ -69,11 +69,7 @@ class App
 
     public function getName(string $locale): ?string
     {
-        if ($this->names) {
-            return $this->names->get($locale);
-        }
-
-        return null;
+        return $this->names->get($locale);
     }
 
     public function setNames($names): App

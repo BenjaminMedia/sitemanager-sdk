@@ -40,4 +40,22 @@ class BrandTest extends TestCase
 
         Asserts::assertBrand($brand, $data);
     }
+
+    public function testCanSetCollectionsDirectly()
+    {
+        $brand = new Brand(null);
+        $brand->setNames(collect([
+            'da' => 'test DA',
+            'sv' => 'test SV'
+        ]));
+        $brand->setMailSenders(collect([
+            'da' => 'mail-da@example.test',
+            'sv' => 'mail-sv@example.test',
+        ]));
+
+        $this->assertEquals('test DA', $brand->getName('da'));
+        $this->assertEquals('test SV', $brand->getName('sv'));
+        $this->assertEquals('mail-da@example.test', $brand->getMailSender('da'));
+        $this->assertEquals('mail-sv@example.test', $brand->getMailSender('sv'));
+    }
 }
