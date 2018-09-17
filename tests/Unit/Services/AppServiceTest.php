@@ -48,6 +48,14 @@ class AppServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var AppService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateApp();
@@ -68,5 +76,13 @@ class AppServiceTest extends ServiceTestCase
 
         $this->assertInstanceOf(App::class, $app);
         Asserts::assertApp($app, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var AppService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 }

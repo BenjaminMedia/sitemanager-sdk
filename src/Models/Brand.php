@@ -115,11 +115,7 @@ class Brand
 
     public function getName(string $locale): ?string
     {
-        if ($this->names) {
-            return $this->names->get($locale);
-        }
-
-        return null;
+        return $this->names->get($locale);
     }
 
     /**
@@ -327,10 +323,6 @@ class Brand
 
     public function getMailSender(string $locale): ?string
     {
-        if ($this->mailSenders) {
-            return $this->mailSenders->get($locale);
-        }
-
-        return null;
+        return $this->mailSenders->get($locale);
     }
 }

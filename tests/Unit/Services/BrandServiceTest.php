@@ -49,6 +49,14 @@ class BrandServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var BrandService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateBrand();
@@ -70,5 +78,13 @@ class BrandServiceTest extends ServiceTestCase
         $this->assertInstanceOf(Brand::class, $brand);
 
         Asserts::assertBrand($brand, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var BrandService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 }

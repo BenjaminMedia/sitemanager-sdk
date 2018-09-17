@@ -6,13 +6,17 @@ use Illuminate\Support\Collection;
 
 trait PaginationTrait
 {
-    protected function unravelPagination(?Collection $items = null, int $page = 1): Collection
+    protected function unravelPagination(?Collection $items = null, int $page = 1): ?Collection
     {
         return $this->unravelEndpointPagination('getAll', null, $items, $page);
     }
 
-    protected function unravelEndpointPagination(string $endpoint, $param, ?Collection $items = null, int $page = 1)
-    {
+    protected function unravelEndpointPagination(
+        string $endpoint,
+        $param,
+        ?Collection $items = null,
+        int $page = 1
+    ): ?Collection {
         if (!$items) {
             $items = new Collection();
         }
@@ -30,6 +34,10 @@ trait PaginationTrait
             }
         }
 
-        return $items;
+        if ($items instanceof Collection && $items->isNotEmpty()) {
+            return $items;
+        }
+
+        return null;
     }
 }

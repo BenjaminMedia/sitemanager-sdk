@@ -80,6 +80,14 @@ class CategoryServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var CategoryService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateCategory();
@@ -99,6 +107,14 @@ class CategoryServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertCategory($category, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var CategoryService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 
     public function testCanGetByContenthubId()
@@ -123,6 +139,14 @@ class CategoryServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertCategory($category, $response);
+    }
+
+    public function testCanGetByContenthubIdWithEmptyResponse()
+    {
+        /** @var CategoryService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByContenthubId('abc123'));
     }
 
     public function testCanGetByBrandId()
@@ -192,5 +216,13 @@ class CategoryServiceTest extends ServiceTestCase
         $categories->each(function (Category $category, int $index) use ($expectedCategories) {
             Asserts::assertCategory($category, $expectedCategories[$index]);
         });
+    }
+
+    public function testCanGetByBrandIdWithEmptyResponse()
+    {
+        /** @var CategoryService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByBrandId(1));
     }
 }

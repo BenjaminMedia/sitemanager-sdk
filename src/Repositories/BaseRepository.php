@@ -4,6 +4,7 @@ namespace Bonnier\SiteManager\Repositories;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 class BaseRepository
 {
@@ -27,7 +28,7 @@ class BaseRepository
             if (json_last_error() === JSON_ERROR_NONE) {
                 return $decodedResponse;
             }
-        } catch (ClientException $exception) {
+        } catch (RequestException $exception) {
             return null;
         }
 

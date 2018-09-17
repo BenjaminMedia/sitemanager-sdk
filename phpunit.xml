@@ -16,4 +16,9 @@
     <php>
         <env name="SITE_MANAGER_HOST" value="http://site-manager.test"/>
     </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
 </phpunit>

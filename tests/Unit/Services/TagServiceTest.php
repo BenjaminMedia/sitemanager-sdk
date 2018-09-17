@@ -80,6 +80,14 @@ class TagServiceTest extends ServiceTestCase
         });
     }
 
+    public function testCanGetAllWithEmptyResponse()
+    {
+        /** @var TagService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getAll());
+    }
+
     public function testCanGetById()
     {
         $response = Generators::generateTag();
@@ -99,6 +107,14 @@ class TagServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertTag($tag, $response);
+    }
+
+    public function testCanGetByIdWithEmptyResponse()
+    {
+        /** @var TagService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getById(1));
     }
 
     public function testCanGetByContenthubId()
@@ -123,6 +139,14 @@ class TagServiceTest extends ServiceTestCase
         $this->assertEmpty($request->getUri()->getQuery());
 
         Asserts::assertTag($tag, $response);
+    }
+
+    public function testCanGetByContenthubIdWithEmptyResponse()
+    {
+        /** @var TagService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByContenthubId('abc123'));
     }
 
     public function testCanGetByBrandId()
@@ -192,5 +216,13 @@ class TagServiceTest extends ServiceTestCase
         $tags->each(function (Tag $tag, int $index) use ($expectedTags) {
             Asserts::assertTag($tag, $expectedTags[$index]);
         });
+    }
+
+    public function testCanGetByBrandIdWithEmptyResponse()
+    {
+        /** @var TagService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByBrandId(1));
     }
 }
