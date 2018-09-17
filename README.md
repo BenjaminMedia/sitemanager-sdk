@@ -1,4 +1,4 @@
-# SiteManager SDK
+# SiteManager SDK [![CircleCI](https://circleci.com/gh/BenjaminMedia/sitemanager-sdk/tree/master.svg?style=svg)](https://circleci.com/gh/BenjaminMedia/sitemanager-sdk/tree/master)
 
 ## Installation
 `composer require bonnier/sitemanager-sdk`
