@@ -84,4 +84,62 @@ class SiteServiceTest extends ServiceTestCase
 
         $this->assertNull($service->getById(1));
     }
+
+    public function testCanGetByDomain()
+    {
+        $response = Generators::generateSite();
+
+        /** @var SiteService $service */
+        $service = $this->getService([
+            new Response(200, [], json_encode($response)),
+        ]);
+
+        $site = $service->getByDomain($response->domain);
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/sites/domain/' . $response->domain, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
+
+        Asserts::assertSite($site, $response);
+    }
+
+    public function testCanGetByDomainWithEmptyResponse()
+    {
+        /** @var SiteService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByDomain('example.test'));
+    }
+
+    public function testCanGetByLoginDomain()
+    {
+        $response = Generators::generateSite();
+
+        /** @var SiteService $service */
+        $service = $this->getService([
+            new Response(200, [], json_encode($response)),
+        ]);
+
+        $site = $service->getByLoginDomain($response->login_domain);
+
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/sites/login-domain/' . $response->login_domain, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
+
+        Asserts::assertSite($site, $response);
+    }
+
+    public function testCanGetByLoginDomainWithEmptyResponse()
+    {
+        /** @var SiteService $service */
+        $service = $this->getService([new Response()]);
+
+        $this->assertNull($service->getByLoginDomain('login.example.test'));
+    }
 }
