@@ -53,4 +53,40 @@ class SiteRepositoryTest extends RepositoryTestCase
         $this->assertEquals('/api/v1/sites/' . $response->id, $request->getUri()->getPath());
         $this->assertEmpty($request->getUri()->getQuery());
     }
+
+    public function testCanGetByDomain()
+    {
+        $response = Generators::generateSite();
+
+        /** @var SiteRepository $repo */
+        $repo = $this->getRepository([
+            new Response(200, [], json_encode($response))
+        ]);
+
+        $this->assertEquals($response, $repo->findByDomain($response->domain));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/sites/domain/' . $response->domain, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
+    }
+
+    public function testCanGetByLoginDomain()
+    {
+        $response = Generators::generateSite();
+
+        /** @var SiteRepository $repo */
+        $repo = $this->getRepository([
+            new Response(200, [], json_encode($response)),
+        ]);
+
+        $this->assertEquals($response, $repo->findByLoginDomain($response->login_domain));
+        $this->assertCount(1, $this->historyContainer);
+        /** @var Request $request */
+        $request = $this->historyContainer[0]['request'];
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/v1/sites/login-domain/' . $response->login_domain, $request->getUri()->getPath());
+        $this->assertEmpty($request->getUri()->getQuery());
+    }
 }

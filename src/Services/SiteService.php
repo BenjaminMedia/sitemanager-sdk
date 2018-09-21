@@ -39,4 +39,22 @@ class SiteService
 
         return null;
     }
+
+    public function getByDomain(string $domain): ?Site
+    {
+        if ($site = $this->repository->findByDomain($domain)) {
+            return new Site($site);
+        }
+
+        return null;
+    }
+
+    public function getByLoginDomain(string $loginDomain): ?Site
+    {
+        if ($site = $this->repository->findByLoginDomain($loginDomain)) {
+            return new Site($site);
+        }
+
+        return null;
+    }
 }
