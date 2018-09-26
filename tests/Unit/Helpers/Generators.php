@@ -137,6 +137,7 @@ class Generators
         $site->domain = $config['domain'] ?? parse_url(self::faker()->url, PHP_URL_HOST);
         $site->login_domain = $config['login_domain'] ?? parse_url(self::faker()->url, PHP_URL_HOST);
         $site->api_domain = $config['api_domain'] ?? parse_url(self::faker()->url, PHP_URL_HOST);
+        $site->shop_domain = $config['shop_domain'] ?? self::faker()->url;
         $site->language = $config['language'] ?? self::faker()->languageCode;
         $site->locale = $config['locale'] ?? self::faker()->locale;
         $site->shell_url = $config['shell'] ?? self::faker()->url;

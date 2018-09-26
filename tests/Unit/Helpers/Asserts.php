@@ -71,6 +71,7 @@ class Asserts extends TestCase
         self::assertEquals($data->domain, $site->getDomain());
         self::assertEquals($data->login_domain, $site->getLoginDomain());
         self::assertEquals($data->api_domain, $site->getApiDomain());
+        self::assertEquals($data->shop_domain, $site->getShopDomain());
         self::assertEquals($data->language, $site->getLanguage());
         self::assertEquals($data->locale, $site->getLocale());
         self::assertEquals($data->shell_url, $site->getShellUrl());

@@ -19,6 +19,7 @@ class SiteTest extends TestCase
         $this->assertNull($site->getDomain());
         $this->assertNull($site->getLoginDomain());
         $this->assertNull($site->getApiDomain());
+        $this->assertNull($site->getShopDomain());
         $this->assertNull($site->getLanguage());
         $this->assertNull($site->getLocale());
         $this->assertNull($site->getShellUrl());
