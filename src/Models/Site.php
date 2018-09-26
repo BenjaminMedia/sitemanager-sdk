@@ -23,6 +23,9 @@ class Site
     protected $apiDomain;
 
     /** @var string|null */
+    protected $shopDomain;
+
+    /** @var string|null */
     protected $language;
 
     /** @var string|null */
@@ -73,6 +76,7 @@ class Site
             ->setDomain($site->domain ?? null)
             ->setLoginDomain($site->login_domain ?? null)
             ->setApiDomain($site->api_domain ?? null)
+            ->setShopDomain($site->shop_domain ?? null)
             ->setLanguage($site->language ?? null)
             ->setLocale($site->locale ?? null)
             ->setShellUrl($site->shell_url ?? null)
@@ -199,6 +203,24 @@ class Site
     public function setApiDomain(?string $apiDomain): Site
     {
         $this->apiDomain = $apiDomain;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShopDomain(): ?string
+    {
+        return $this->shopDomain;
+    }
+
+    /**
+     * @param null|string $shopDomain
+     * @return Site
+     */
+    public function setShopDomain(?string $shopDomain): Site
+    {
+        $this->shopDomain = $shopDomain;
         return $this;
     }
 
