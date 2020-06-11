@@ -34,8 +34,7 @@ class SiteManagerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing Site Manager Host argument!');
-
-        putenv('SITE_MANAGER_HOST=');
+	    $_ENV['SITE_MANAGER_HOST'] = '';
 
         new SiteManager();
     }
